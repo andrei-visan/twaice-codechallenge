@@ -1,4 +1,4 @@
-## Task:
+## Task
 Implement a program with two threads:
 
 - One thread reads out the values from the battery_data.csv and sends them to the other thread.
