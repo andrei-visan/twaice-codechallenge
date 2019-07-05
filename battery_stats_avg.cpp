@@ -56,7 +56,7 @@ void write_csv(std::ofstream &csv_stream_out,
     // stores a (voltage, temperature) pair
     std::pair<float, float> value_pair;
     // stores at most the latest AVG_INTERVAL entries in the shared data queue
-    std::deque<std::pair<float, float>> avg_buf;
+    std::queue<std::pair<float, float>> avg_buf;
     double sum_voltage = 0, sum_temp = 0;
 
     // while input data has not been fully consumed
@@ -72,7 +72,7 @@ void write_csv(std::ofstream &csv_stream_out,
             q_readings.pop();
 
             // add newest value to buffer
-            avg_buf.push_back(value_pair);
+            avg_buf.push(value_pair);
             sum_voltage += value_pair.first;
             sum_temp += value_pair.second;
 
@@ -80,7 +80,7 @@ void write_csv(std::ofstream &csv_stream_out,
             if (avg_buf.size() > AVG_INTERVAL) {
                 sum_voltage -= avg_buf.front().first;
                 sum_temp -= avg_buf.front().second;
-                avg_buf.pop_front();
+                avg_buf.pop();
             }
 
             // outputing
