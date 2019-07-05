@@ -60,7 +60,7 @@ void write_csv(std::ofstream &csv_stream_out,
     double sum_voltage = 0, sum_temp = 0;
 
     // while input data has not been fully consumed
-    while (!work_done) {
+    do {
         std::unique_lock<std::mutex> lock(mux);
 
         // while there is still data in the shared data queue
@@ -95,7 +95,7 @@ void write_csv(std::ofstream &csv_stream_out,
             std::this_thread::sleep_for(std::chrono::milliseconds(
                 WRITER_SIM_WORK));  // simulate extra work
         }
-    }
+    } while (!work_done);
 }
 
 int main() {
